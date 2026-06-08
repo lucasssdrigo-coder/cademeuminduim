@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitor Nacional do Amendoim</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0f172a,#1e293b,#334155);min-height:100vh;display:flex;justify-content:center;align-items:center;color:white;padding:20px}
+.container{width:100%;max-width:800px;background:rgba(255,255,255,.08);backdrop-filter:blur(15px);border-radius:25px;padding:40px;text-align:center;box-shadow:0 15px 40px rgba(0,0,0,.4)}
+.badge{display:inline-block;background:#facc15;color:#111827;font-weight:bold;padding:10px 20px;border-radius:50px;margin-bottom:20px}
+.foto{width:250px;height:250px;object-fit:cover;border-radius:50%;border:6px solid #facc15;box-shadow:0 0 30px rgba(250,204,21,.5);margin-bottom:25px}
+h1{font-size:2.5rem;margin-bottom:10px}
+h2{color:#cbd5e1;font-weight:400;margin-bottom:30px}
+.contador{font-size:6rem;font-weight:900;color:#facc15}
+.label{font-size:1.5rem;margin-bottom:25px}
+.botao{margin-top:20px;background:#facc15;color:#111827;border:none;padding:15px 25px;border-radius:12px;font-size:1rem;font-weight:bold;cursor:pointer}
+.frase{background:rgba(255,255,255,.05);border-radius:15px;padding:15px;margin-top:20px}
+footer{margin-top:30px;color:#94a3b8;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="badge">🏆 Instituto Nacional de Fiscalização do Amendoim</div>
+<img src="eduardo.jpg" alt="Eduardo" class="foto">
+<h1>Eduardo Scapin</h1>
+<h2>Dias desde a última ocorrência envolvendo amendoim</h2>
+<div class="contador" id="contador">0</div>
+<div class="label">dias consecutivos</div>
+<button onclick="resetarContador()" class="botao">🥜 Eduardo trouxe o amendoim</button>
+<div style="margin-top:20px">📉 Total de reinícios registrados: <span id="falhas">0</span></div>
+<div class="frase" id="frase"></div>
+<footer>Último registro: <span id="data"></span></footer>
+</div>
+<script>
+const frases=[
+"O amendoim permanece sob vigilância constante.",
+"Mais um dia de excelência no gerenciamento de amendoins.",
+"Nenhuma ocorrência registrada pelos fiscais.",
+"O estoque segue seguro e protegido.",
+"Operação Amendoim continua um sucesso."
+];
+document.getElementById("frase").innerText=frases[Math.floor(Math.random()*frases.length)];
+if(!localStorage.getItem("dataAmendoim")) localStorage.setItem("dataAmendoim",new Date().toISOString());
+if(!localStorage.getItem("falhas")) localStorage.setItem("falhas","0");
+
+function atualizarContador(){
+ const dataSalva=new Date(localStorage.getItem("dataAmendoim"));
+ const dias=Math.floor((new Date()-dataSalva)/(1000*60*60*24));
+ document.getElementById("contador").innerText=dias;
+ document.getElementById("falhas").innerText=localStorage.getItem("falhas");
+ document.getElementById("data").innerText=dataSalva.toLocaleDateString("pt-BR");
+}
+
+function resetarContador(){
+ if(confirm("Confirmar que Eduardo trouxe o amendoim hoje?")){
+   localStorage.setItem("dataAmendoim",new Date().toISOString());
+   localStorage.setItem("falhas",String(Number(localStorage.getItem("falhas"))+1));
+   atualizarContador();
+   alert("🥜 Contador reiniciado com sucesso!");
+ }
+}
+atualizarContador();
+</script>
+</body>
+</html>
